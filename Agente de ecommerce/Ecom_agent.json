@@ -1,0 +1,293 @@
+{
+  "name": "Ecom_agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "452aa5c6-3ac9-44a7-aa40-e391a193863e",
+      "name": "When chat message received",
+      "webhookId": "e79237ec-96d2-40b2-8325-79735f5c68ba"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=#Rol\nEres un asistente capaz de contestar preguntas del usuario basándote en información sobre el Ecommerce\n\n#Tareas\n- Tu función principal es responder al mensaje {{ $json.chatInput }}\n\n- Utiliza información de la herramienta ListaProductos para consultas sobre productos del Ecommerce\n\n- Utiliza información de la herramienta Documentos_Ecommerce para cualquier consulta relacionada con el funcionamiento del Ecommerce\n\n#Notas\n- Tus respuestas deben ser claras y concisas, no debes exceder los 200 caracteres\n\n- Si el cliente decide comprar el producto puedes pasarle el enlace para que pague. El enlace es https://damianmunoz.com y debe ir siempre en un hipervínculo",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        384,
+        0
+      ],
+      "id": "78646e5e-8788-4556-9b4e-c2c9c82aa2dc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        224
+      ],
+      "id": "5b72bdb0-a739-4f7b-9ac5-5ca8a78ba09e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "FgOCxW4pI3UMZRx9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "2e0c6165-7fb7-426a-bf81-9cba8afa952c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        432
+      ],
+      "id": "fa089542-a4d1-4b6d-9c82-b5f256c31f59",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "FgOCxW4pI3UMZRx9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "ecom",
+          "mode": "list",
+          "cachedResultName": "ecom"
+        },
+        "options": {
+          "pineconeNamespace": "name_ecom"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        432
+      ],
+      "id": "5895f151-fb15-449e-bde6-8f440332da2c",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "Gd92JDXOG5UkP83J",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 512
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        640
+      ],
+      "id": "519e1270-1977-4473-be9b-ca7dde29f242",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "FgOCxW4pI3UMZRx9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19uJvUNP6LlOr3mucp13NgU-Ns1rt0mSS9Skxj2MjvFI",
+          "mode": "list",
+          "cachedResultName": "Ecom_products",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19uJvUNP6LlOr3mucp13NgU-Ns1rt0mSS9Skxj2MjvFI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19uJvUNP6LlOr3mucp13NgU-Ns1rt0mSS9Skxj2MjvFI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        224
+      ],
+      "id": "f1ff027c-9f84-491a-b893-979f9f8afd2d",
+      "name": "ListaProductos",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "H5vvFXJ6PIfMuIQo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Esta herramienta va a dar información sobre el funcionamiento del Ecommerce"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        224
+      ],
+      "id": "fc8d87e7-19e2-423e-b5c9-7550b049274d",
+      "name": "Documentos_Ecommerce"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Documentos_Ecommerce",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Documentos_Ecommerce",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ListaProductos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Documentos_Ecommerce": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "96f738bc-a325-435b-9574-f5fdc0ab7525",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "95ec861c4642b2c05130cbab4e6a53b4b4bb1abe20d388addfc05ab51398996c"
+  },
+  "id": "Bjd2a54Ehy7WrbbQ",
+  "tags": []
+}
